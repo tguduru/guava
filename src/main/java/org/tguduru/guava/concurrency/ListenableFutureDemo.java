@@ -16,7 +16,7 @@ public class ListenableFutureDemo {
     public static void main(final String[] args) throws ExecutionException, InterruptedException {
         final AtomicInteger atomicInteger = new AtomicInteger();
         final ExecutorService executorService = Executors.newCachedThreadPool();
-        final Future<Integer> integerFuture = executorService.submit(() -> atomicInteger.incrementAndGet());
+        final Future<Integer> integerFuture = executorService.submit(atomicInteger::incrementAndGet);
         // this blocks the call and we need to call get() to compute the thread and return the result.
         System.out.println(integerFuture.get());
 
@@ -27,8 +27,7 @@ public class ListenableFutureDemo {
         final ListeningExecutorService listeningExecutorService = MoreExecutors.listeningDecorator(executorService);
 
         // getting a ListenableFuture from the ListeningExecutorService.
-        final ListenableFuture<Integer> integerListenableFuture = listeningExecutorService.submit(() -> atomicInteger
-                .incrementAndGet());
+        final ListenableFuture<Integer> integerListenableFuture = listeningExecutorService.submit(atomicInteger::incrementAndGet);
 
         // registering a callback using Runnable. In this case we are not actually calling the Future.get() to block the
         // call. This is good for callbacks like they don't need to worry about the success or failure of the
