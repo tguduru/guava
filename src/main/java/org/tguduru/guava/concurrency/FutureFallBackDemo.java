@@ -34,5 +34,6 @@ public class FutureFallBackDemo {
         final ListenableFuture<Integer> listenableFallbackFuture = Futures.withFallback(failFuture, futureFallback,
                 executorService);
         System.out.println("Returns default value (1) : " + listenableFallbackFuture.get());
+        executorService.shutdown();
     }
 }

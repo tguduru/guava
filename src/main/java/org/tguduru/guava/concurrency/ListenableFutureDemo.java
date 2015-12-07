@@ -34,5 +34,6 @@ public class ListenableFutureDemo {
         // computation. If we want to call different methods based on computation there is another interface called
         // FutureCallback will be able to help with that.
         integerListenableFuture.addListener(() -> System.out.println(atomicInteger.get()), listeningExecutorService);
+        executorService.shutdown();
     }
 }

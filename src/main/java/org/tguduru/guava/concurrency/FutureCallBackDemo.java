@@ -48,5 +48,6 @@ public class FutureCallBackDemo {
                                     // before all Futures... Those futures will execute in different threads
 
         System.out.println(Thread.currentThread().getState());
+        executorService.shutdown();
     }
 }
