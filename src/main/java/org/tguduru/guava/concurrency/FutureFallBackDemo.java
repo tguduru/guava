@@ -1,9 +1,13 @@
 package org.tguduru.guava.concurrency;
 
-import com.google.common.util.concurrent.*;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+
+import com.google.common.util.concurrent.FutureFallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 /**
  * Demonstrates the usage of {@link com.google.common.util.concurrent.FutureFallback}, this interface is useful when you
@@ -15,8 +19,8 @@ import java.util.concurrent.Executors;
 public class FutureFallBackDemo {
     public static void main(final String[] args) throws ExecutionException, InterruptedException {
 
-        final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors
-                .newFixedThreadPool(5));
+        final ListeningExecutorService executorService = MoreExecutors
+                .listeningDecorator(Executors.newFixedThreadPool(5));
         // this fall back logic returns the default value (1) if atomicInteger if anything goes wrong while computing
         // it. I could write a lambda but wrote an anonymous class to understand what exactly its doing.
         final FutureFallback<Integer> futureFallback = new FutureFallback<Integer>() {
@@ -30,7 +34,6 @@ public class FutureFallBackDemo {
         final ListenableFuture<Integer> failFuture = executorService.submit(() -> {
             throw new RuntimeException("Failed");
         });
-
         final ListenableFuture<Integer> listenableFallbackFuture = Futures.withFallback(failFuture, futureFallback,
                 executorService);
         System.out.println("Returns default value (1) : " + listenableFallbackFuture.get());
